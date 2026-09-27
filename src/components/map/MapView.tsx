@@ -56,23 +56,33 @@ export const MapView: React.FC = () => {
       mapInstanceRef.current.removeLayer(tileLayerRef.current);
     }
 
-    let tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-    let attribution = '&copy; OpenStreetMap contributors &copy; CARTO';
+    let tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+    let attribution = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ';
+    let maxZoom = 19;
+    let subdomains = 'abc';
 
     if (preferences.mapTheme === 'light') {
-      tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+      maxZoom = 19;
+      subdomains = 'abc';
     } else if (preferences.mapTheme === 'satellite') {
       tileUrl =
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-      attribution = 'Tiles &copy; Esri';
+      attribution = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+      maxZoom = 18;
+      subdomains = 'abc';
     } else if (preferences.mapTheme === 'night_cyber') {
-      tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+      attribution = 'Tiles &copy; Esri';
+      maxZoom = 19;
+      subdomains = 'abc';
     }
 
     const newTileLayer = L.tileLayer(tileUrl, {
       attribution,
-      maxZoom: 19,
-      subdomains: 'abcd',
+      maxZoom,
+      subdomains,
     }).addTo(mapInstanceRef.current);
 
     tileLayerRef.current = newTileLayer;
